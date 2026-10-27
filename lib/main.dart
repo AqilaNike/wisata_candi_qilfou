@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wisata_candi/providers/favorite_provider.dart';
+import 'package:wisata_candi/providers/auth_provider.dart';
 import 'package:wisata_candi/screens/sign_in_screen.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FavoriteProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,8 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors
-              .transparent, // Mengatur background transparan jika diperlukan
+          backgroundColor: Colors.transparent,
           elevation: 0,
           iconTheme: IconThemeData(color: Colors.deepPurple),
           titleTextStyle: TextStyle(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/favorite_provider.dart';
 import 'package:wisata_candi/models/candi.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -8,6 +10,9 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 1. Membaca status favorit dari FavoriteProvider
+    final isFav = context.watch<FavoriteProvider>().isFavorite(candi.name);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -30,15 +35,19 @@ class DetailScreen extends StatelessWidget {
                 ),
                 // 2. Tombol back
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 32,
+                  ),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.deepPurple[100]?.withValues(alpha: 0.8),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context); // Navigasi kembali ke layar sebelumnya
+                      },
                       icon: const Icon(Icons.arrow_back),
                     ),
                   ),
@@ -61,47 +70,68 @@ class DetailScreen extends StatelessWidget {
                       Text(
                         candi.name,
                         style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      // 2. Tombol Favorit terhubung ke Provider
                       IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.favorite_border),
+                        onPressed: () {
+                          context.read<FavoriteProvider>().toggle(candi.name);
+                        },
+                        icon: Icon(
+                          isFav ? Icons.favorite : Icons.favorite_border,
+                          color: isFav ? Colors.red : null,
+                        ),
+                        
                       ),
                     ],
                   ),
 
                   // Info tengah
                   const SizedBox(height: 16),
-                  Row(children: [
-                    const Icon(Icons.place, color: Colors.red),
-                    const SizedBox(width: 8),
-                    const SizedBox(
-                      width: 70,
-                      child: Text('Lokasi',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    Text(': ${candi.location}'),
-                  ]),
-                  Row(children: [
-                    const Icon(Icons.calendar_month, color: Colors.blue),
-                    const SizedBox(width: 8),
-                    const SizedBox(
-                      width: 70,
-                      child: Text('Dibangun',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    Text(': ${candi.built}'),
-                  ]),
-                  Row(children: [
-                    const Icon(Icons.house, color: Colors.green),
-                    const SizedBox(width: 8),
-                    const SizedBox(
-                      width: 70,
-                      child: Text('Tipe',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    Text(': ${candi.type}'),
-                  ]),
+                  Row(
+                    children: [
+                      const Icon(Icons.place, color: Colors.red),
+                      const SizedBox(width: 8),
+                      const SizedBox(
+                        width: 70,
+                        child: Text(
+                          'Lokasi',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(': ${candi.location}'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.calendar_month, color: Colors.blue),
+                      const SizedBox(width: 8),
+                      const SizedBox(
+                        width: 70,
+                        child: Text(
+                          'Dibangun',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(': ${candi.built}'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.house, color: Colors.green),
+                      const SizedBox(width: 8),
+                      const SizedBox(
+                        width: 70,
+                        child: Text(
+                          'Tipe',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(': ${candi.type}'),
+                    ],
+                  ),
 
                   // Pemisah
                   const SizedBox(height: 16),
@@ -111,7 +141,10 @@ class DetailScreen extends StatelessWidget {
                   // Info bawah
                   const Text(
                     'Deskripsi',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   Text(candi.description),
@@ -128,7 +161,10 @@ class DetailScreen extends StatelessWidget {
                   Divider(color: Colors.deepPurple.shade100),
                   const Text(
                     'Galeri',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
