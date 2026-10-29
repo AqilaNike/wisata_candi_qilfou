@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/favorite_provider.dart';
+
 import 'package:wisata_candi/models/candi.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -46,7 +48,9 @@ class DetailScreen extends StatelessWidget {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        Navigator.pop(context); // Navigasi kembali ke layar sebelumnya
+                        if (Navigator.canPop(context)) {
+                          Navigator.pop(context);
+                        }
                       },
                       icon: const Icon(Icons.arrow_back),
                     ),
@@ -83,7 +87,6 @@ class DetailScreen extends StatelessWidget {
                           isFav ? Icons.favorite : Icons.favorite_border,
                           color: isFav ? Colors.red : null,
                         ),
-                        
                       ),
                     ],
                   ),
@@ -141,10 +144,7 @@ class DetailScreen extends StatelessWidget {
                   // Info bawah
                   const Text(
                     'Deskripsi',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
                   Text(candi.description),
@@ -161,10 +161,7 @@ class DetailScreen extends StatelessWidget {
                   Divider(color: Colors.deepPurple.shade100),
                   const Text(
                     'Galeri',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
                   SizedBox(

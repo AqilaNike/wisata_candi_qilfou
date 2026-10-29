@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
+import 'home_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -23,8 +24,18 @@ class _SignInScreenState extends State<SignInScreen> {
   void _signIn() {
     final name = _usernameController.text.trim();
     if (name.isNotEmpty) {
-      context.read<AuthProvider>().signIn(name); // Simpan nama ke AuthProvider
-      Navigator.pop(context); // Kembali ke halaman profil
+      context.read<AuthProvider>().signIn(name);
+
+      // Cek apakah ada halaman sebelumnya untuk kembali
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      } else {
+        // Jika tidak ada halaman sebelumnya, pindah ke HomeScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
     } else {
       setState(() {
         _errorText = 'Nama pengguna tidak boleh kosong';
