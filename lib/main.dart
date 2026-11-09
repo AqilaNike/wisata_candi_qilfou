@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wisata_candi/providers/favorite_provider.dart';
 import 'package:wisata_candi/providers/auth_provider.dart';
-import 'package:wisata_candi/screens/home_screen.dart'; // Tambahkan import ini!
+import 'package:wisata_candi/screens/home_screen.dart';
+import 'package:wisata_candi/screens/search_screen.dart';
 
 void main() {
   runApp(
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         ).copyWith(primary: Colors.deepPurple, surface: Colors.deepPurple[50]),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const SearchScreen(),
     );
   }
 }
